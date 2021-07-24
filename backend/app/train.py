@@ -5,11 +5,11 @@ import fire
 import pandas as pd
 import numpy as np
 
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
-from joblib import dump, load
+from joblib import dump
 
 def main():
   print('Start training...')
