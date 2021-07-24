@@ -11,5 +11,6 @@ def root():
 @app.get('/dummy_pred')
 def get_dummy():
 	sample = [[5.1,3.5,1.4,0.2]]
-	pred = pipeline_pkl.predict(sample)
-	return {"pred_dummy": pred}
+	pred = pipeline_pkl.predict(sample)[0]
+
+	return {"pred_dummy": int(pred)}
