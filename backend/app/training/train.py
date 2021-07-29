@@ -35,7 +35,7 @@ def main():
   print('Macro average test:', f1_score(y_test, y_test_pred, average='macro'))
 
   # Serialize pipeline
-  dump(pipeline, 'pipeline.joblib') 
+  dump(pipeline, '../pipeline.joblib') 
 
 if __name__ == '__main__':
   fire.Fire(main)
