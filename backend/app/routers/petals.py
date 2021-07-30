@@ -6,7 +6,7 @@ import codecs
 import csv
 import pandas as pd
 
-from app import crud
+from app import crud, schemas
 
 pipeline_pkl = load('pipeline.joblib')
 
@@ -35,7 +35,8 @@ def predict_sample(sepal_length:float = Form(...),
 	sample = [[sepal_length, sepal_width, petal_length, petal_width]]
 	pred = pipeline_pkl.predict(sample)[0]
 
-	crud.petal.create_petal()
+	petal = schemas.petal.PetalCreate(1,2,3,4,5)
+	crud.petal.create_petal(db, petal)
 
 	return {"prediction": int(pred)}
 
