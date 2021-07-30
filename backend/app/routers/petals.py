@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Form, File, UploadFile
 from joblib import load
 
+from sqlalchemy.orm import Session
 import codecs
 import csv
 import pandas as pd
+
+from app import crud
 
 pipeline_pkl = load('pipeline.joblib')
 
@@ -32,7 +35,7 @@ def predict_sample(sepal_length:float = Form(...),
 	sample = [[sepal_length, sepal_width, petal_length, petal_width]]
 	pred = pipeline_pkl.predict(sample)[0]
 
-	# To-do: Write in Redis
+	crud.petal.create_petal()
 
 	return {"prediction": int(pred)}
 
