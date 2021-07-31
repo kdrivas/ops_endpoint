@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, File, UploadFile
+from fastapi import APIRouter, Form, File, UploadFile, Depends
 from joblib import load
 
 from sqlalchemy.orm import Session
@@ -6,6 +6,7 @@ import codecs
 import csv
 import pandas as pd
 
+from . import deps
 from app import crud, schemas
 
 pipeline_pkl = load('pipeline.joblib')
@@ -21,9 +22,18 @@ def ping():
 	return {"petals": "I'm alive"}
 
 @router.get('/dummy_pred')
-def get_dummy():
+def get_dummy(db = Depends(deps.get_session)):
 	sample = [[5.1,3.5,1.4,0.2]]
 	pred = pipeline_pkl.predict(sample)[0]
+
+	petal = schemas.petal.PetalCreate(sepal_length=1, sepal_width=2, petal_width=3, petal_length=4, prediction=5)
+	#petal. = 1
+	#petal.sepal_width = 2
+	#petal.petal_width = 4
+	#petal.petal_length = 3
+	#petal.prediction = 5
+
+	crud.petal.create_petal(db, petal)
 
 	return {"pred_dummy": int(pred)}
 

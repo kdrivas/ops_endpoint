@@ -6,7 +6,7 @@ def get_petals(db: Session, skip:int = 0, limit:int = 100):
 	return db.query(Petal).offset(skip).limit(limit)
 
 def create_petal(db:Session, petal: PetalCreate):
-	db_user = Petal(**PetalCreate.dict())
+	db_user = Petal(**petal.dict())
 	db.add(db_user)
 	db.commit()
 	db.refresh(db_user)

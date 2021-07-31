@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from routers import petals
+from app.api import petals
 
 app = FastAPI()
 app.add_middleware(
