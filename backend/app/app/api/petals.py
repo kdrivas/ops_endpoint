@@ -46,11 +46,13 @@ def predict_sample(sepal_length:float = Form(...),
 
 	return {"prediction": int(pred)}
 
-@router.post('/pred_batch/')
-def predict_batch(file:UploadFile = File(...), db = Depends(deps.get_session)):
+@router.post('/pred_csv/')
+def predict_csv(file:UploadFile = File(...), db = Depends(deps.get_session)):
 	data = pd.DataFrame(csv.reader(codecs.iterdecode(file.file, 'utf-8')))
 	preds = [float(v) for v in pipeline_pkl.predict(data)]
 
-	# To-do: Write in DB
+	for ix, row in data.iterrows():
+		petal = schemas.petal.PetalCreate(sepal_length=row['sepal_length'], sepal_width=row['sepal_width'], petal_length=row['petal_length'], petal_width=row['petal_width'], prediction=preds[ix])
+		crud.petal.create_petal(db, petal)
 
 	return {"predictions": preds}
