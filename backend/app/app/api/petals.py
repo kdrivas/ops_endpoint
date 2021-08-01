@@ -27,11 +27,6 @@ def get_dummy(db = Depends(deps.get_session)):
 	pred = pipeline_pkl.predict(sample)[0]
 
 	petal = schemas.petal.PetalCreate(sepal_length=1, sepal_width=2, petal_width=3, petal_length=4, prediction=5)
-	#petal. = 1
-	#petal.sepal_width = 2
-	#petal.petal_width = 4
-	#petal.petal_length = 3
-	#petal.prediction = 5
 
 	crud.petal.create_petal(db, petal)
 
@@ -41,20 +36,21 @@ def get_dummy(db = Depends(deps.get_session)):
 def predict_sample(sepal_length:float = Form(...),
 									sepal_width:float = Form(...),
 									petal_length:float = Form(...),
-									petal_width:float = Form(...)):
+									petal_width:float = Form(...),
+									db = Depends(deps.get_session)):
 	sample = [[sepal_length, sepal_width, petal_length, petal_width]]
 	pred = pipeline_pkl.predict(sample)[0]
 
-	petal = schemas.petal.PetalCreate(1,2,3,4,5)
+	petal = schemas.petal.PetalCreate(sepal_length=sepal_length, sepal_width=sepal_width, petal_length=petal_length, petal_width=petal_width, prediction=pred)
 	crud.petal.create_petal(db, petal)
 
 	return {"prediction": int(pred)}
 
 @router.post('/pred_batch/')
-def predict_batch(file:UploadFile = File(...)):
+def predict_batch(file:UploadFile = File(...), db = Depends(deps.get_session)):
 	data = pd.DataFrame(csv.reader(codecs.iterdecode(file.file, 'utf-8')))
 	preds = [float(v) for v in pipeline_pkl.predict(data)]
 
-	# To-do: Write in Redis
+	# To-do: Write in DB
 
 	return {"predictions": preds}

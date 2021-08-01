@@ -15,7 +15,8 @@ app.add_middleware(
 )
 app.include_router(petals.router)
 
-Base.metadata.create_all(bind=engine)
+## Uncomment to create table automatically with metadata
+# Base.metadata.create_all(bind=engine)
 
 @app.get('/')
 def root():
