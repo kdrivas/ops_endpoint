@@ -1,6 +1,6 @@
 # MLOps project
-Building a simple api to serve a ML model trained using Setosa dataset
-Stack: Postgresql + FastAPI + Alembic + Nginx
+<p>Building a simple api to serve a ML model trained using Setosa dataset</p>
+<p>Stack: Postgresql + FastAPI + Alembic + Nginx</p>
 
 - To deploy locally:
 ```
