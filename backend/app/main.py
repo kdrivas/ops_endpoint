@@ -18,6 +18,6 @@ app.include_router(petals.router)
 ## Uncomment to create table automatically with metadata
 # Base.metadata.create_all(bind=engine)
 
-@app.get('/')
+@app.get('/', status_code=201)
 def root():
 	return {"message": "I'm alive"}
